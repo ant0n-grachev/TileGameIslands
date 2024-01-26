@@ -16,6 +16,7 @@ public class TileHandler {
     private int spriteSheetHeight, spriteSheetWidth, spriteOnSheetHeight, spriteOnSheetWidth;
 
     private final String primaryColorSheetPath = "primaryColorSheet.png";
+    private final String grassSpriteSheetPath = "grassSpriteSheet.png";
 
     private Array<WorldTile> worldTileArray;
 
@@ -30,7 +31,7 @@ public class TileHandler {
         worldTileArray.add(new WorldTile(new TextureRegion(new Texture(primaryColorSheetPath), 0, 0, spriteOnSheetWidth, spriteOnSheetHeight), 0, "transparent"));
 
         createWorldTiles(primaryColorSheetPath, "primary color", worldTileArray);
-
+        createWorldTiles(grassSpriteSheetPath, "grass", worldTileArray);
     }
 
     public static TileHandler getTileHandler() {
@@ -49,8 +50,8 @@ public class TileHandler {
         for(int r = 0; r < sheet.getHeight(); r+=spriteOnSheetHeight) {
             for(int c = 0; c < sheet.getWidth(); c+=spriteOnSheetWidth) {
                 boolean solidFound = false;
-                for(int pixelR = 0; pixelR < Tile.ON_SCREEN_DEFAULT_HEIGHT; pixelR++) {
-                    for(int pixelC = 0; pixelC < Tile.ON_SCREEN_DEFAULT_WIDTH; pixelC++) {
+                for(int pixelR = 0; pixelR < spriteOnSheetHeight; pixelR++) {
+                    for(int pixelC = 0; pixelC < spriteOnSheetWidth; pixelC++) {
                         if(pixmap.getPixel(c+pixelC, r+pixelR) != 0) {
                             solidFound = true;
                         }
