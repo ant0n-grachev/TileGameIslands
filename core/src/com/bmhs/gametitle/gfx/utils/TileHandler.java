@@ -18,6 +18,8 @@ public class TileHandler {
     private final String primaryColorSheetPath = "primaryColorSheet.png";
     private final String grassSpriteSheetPath = "grassSpriteSheet.png";
 
+    private final String waterSpriteSheetPath = "watertileset.png";
+
     private Array<WorldTile> worldTileArray;
 
     private TileHandler() {
@@ -32,6 +34,7 @@ public class TileHandler {
 
         createWorldTiles(primaryColorSheetPath, "primary color", worldTileArray);
         createWorldTiles(grassSpriteSheetPath, "grass", worldTileArray);
+        createWorldTiles(waterSpriteSheetPath, "water", worldTileArray);
     }
 
     public static TileHandler getTileHandler() {
