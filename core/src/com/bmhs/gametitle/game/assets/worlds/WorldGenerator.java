@@ -9,6 +9,7 @@ import com.bmhs.gametitle.gfx.assets.tiles.statictiles.WorldTile;
 import com.bmhs.gametitle.gfx.utils.TileHandler;
 
 import java.util.Arrays;
+import java.util.Random;
 import java.util.logging.FileHandler;
 
 
@@ -18,7 +19,9 @@ public class WorldGenerator {
 
     private int[][] worldIntMap;
 
-    private int seedColor, grass, sand;
+    private int seedColor, grass, sand, water;
+
+    Random rand = new Random();
 
     public WorldGenerator (int worldMapRows, int worldMapColumns) {
         this.worldMapRows = worldMapRows;
@@ -40,24 +43,17 @@ public class WorldGenerator {
 //            }
 //        }
 
-        for (int[] i : worldIntMap) {
-            Arrays.fill(i, 84);
-        }
-
         seedColor = 2;
         grass = 67;
         sand = 29;
+        water = 84;
 
-        seedIslands((int)(Math.random() * 5 + 2));
+        for (int[] i : worldIntMap) {
+            Arrays.fill(i, water);
+        }
+
+        seedIslands(10);
         buildIslands();
-
-
-
-//        searchAndExpand(10, seedColor, sand, 0.9);
-//        searchAndExpand(8, seedColor, 39, 0.8);
-//        searchAndExpand(6, seedColor, grass, 0.7);
-//        searchAndExpand(5, seedColor, 6, 0.6);
-//        searchAndExpand(4, seedColor, 1, 0.5);
 
         generateWorldTextFile();
 
@@ -75,74 +71,49 @@ public class WorldGenerator {
                 }
             }
         }
+//        for (int r = 0; r < worldIntMap.length; r++) {
+//            for (int c = 0; c < worldIntMap[r].length; c++) {
+//                if (worldIntMap[r][c] == water) {
+//
+//                }
+//            }
+//        }
     }
-
 
     private void buildIsland(int r, int c, Vector2 origin) {
         worldIntMap[r][c] = sand;
         Vector2 currentDot = new Vector2(r, c);
-        int dst = (int) currentDot.dst(origin);
-        if (dst < 10 && r > 1 && c > 1 && r < worldIntMap.length - 1 && c < worldIntMap[0].length - 1) {
-            if (Math.random() < Math.random()) {
-                buildIsland(r - 1, c - 1, origin);
-            }
-            if (Math.random() < Math.random()) {
-                buildIsland(r - 1, c, origin);
-            }
-            if (Math.random() < Math.random()) {
-                buildIsland(r - 1, c + 1, origin);
-            }
-            if (Math.random() < Math.random()) {
-                buildIsland(r, c + 1, origin);
-            }
-            if (Math.random() < Math.random()) {
-                buildIsland(r + 1, c + 1, origin);
-            }
-            if (Math.random() < Math.random()) {
-                buildIsland(r + 1, c, origin);
-            }
-            if (Math.random() < Math.random()) {
-                buildIsland(r + 1, c - 1, origin);
-            }
-            if (Math.random() < Math.random()) {
-                buildIsland(r, c - 1, origin);
+        int dst = (int) origin.dst(currentDot);
+        if (dst < rand.nextInt(40) + 40 && r > 1 && c > 1 && r < worldIntMap.length - 1 && c < worldIntMap[0].length - 1) {
+            int n = rand.nextInt(8);
+            switch (n) {
+                case 0:
+                    buildIsland(r - 1, c - 1, origin);
+                    break;
+                case 1:
+                    buildIsland(r - 1, c, origin);
+                    break;
+                case 2:
+                    buildIsland(r - 1, c + 1, origin);
+                    break;
+                case 3:
+                    buildIsland(r, c + 1, origin);
+                    break;
+                case 4:
+                    buildIsland(r + 1, c + 1, origin);
+                    break;
+                case 5:
+                    buildIsland(r + 1, c, origin);
+                    break;
+                case 6:
+                    buildIsland(r + 1, c - 1, origin);
+                    break;
+                case 7:
+                    buildIsland(r, c - 1, origin);
+                    break;
             }
         }
     }
-
-//    private void buildIslands() {
-//        for (int r = 0; r < worldIntMap.length; r++) {
-//            for (int c = 0; c < worldIntMap[r].length; c++) {
-//                if (worldIntMap[r][c] == seedColor) {
-//                    while (radius > 0) {
-//                        buildIsland(r, c);
-//                        radius--;
-//                    }
-//                }
-//            }
-//        }
-//    }
-//
-//    int radius = 10;
-//
-//    //Vector2 vectorExample = new Vector2(x, y);
-//    //Vector2 tempVector = new Vector2(x, y);
-//
-//    private void buildIsland(int r, int c) {
-//
-//        vectorExample.dst(tempVector);
-//
-//        //worldIntMap[r][c] = seedColor;
-//
-//        int randR = MathUtils.random(-1, 1);
-//        int randC = MathUtils.random(-1, 1);
-//
-//        if (randR+r >= 0 && randC+c >= 0 && randR+r < worldIntMap.length && randC+c < worldIntMap[0].length && worldIntMap[r][c] != seedColor) {
-//            worldIntMap[randR+r][randC+c] = sand;
-//            buildIsland(r-1, c-1);
-//        }
-//
-//    }
 
     private void seedIslands(int num) {
         for (int i = 0; i < num; i++) {
