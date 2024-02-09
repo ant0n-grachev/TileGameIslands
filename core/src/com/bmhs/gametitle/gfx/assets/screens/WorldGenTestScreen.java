@@ -50,7 +50,7 @@ public class WorldGenTestScreen implements Screen {
         viewport = new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), camera);
         viewport.setScreenBounds(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
-        world = new World(150, 450);
+        world = new World(100, 300);
 
         camera.update();
 
@@ -124,6 +124,14 @@ public class WorldGenTestScreen implements Screen {
     }
 
     private void checkInput() {
+        if (Gdx.input.isKeyPressed(Input.Keys.W) || Gdx.input.isKeyPressed(Input.Keys.A) || Gdx.input.isKeyPressed(Input.Keys.S) || Gdx.input.isKeyPressed(Input.Keys.D)) {
+            effectiveViewportWidth = camera.viewportWidth * camera.zoom;
+            effectiveViewportHeight = camera.viewportHeight * camera.zoom;
+
+            camera.position.x = MathUtils.clamp(camera.position.x, effectiveViewportWidth / 2.0f, world.getWorldMapColumns()*Tile.ON_SCREEN_DEFAULT_WIDTH - effectiveViewportWidth/2.0f);
+            camera.position.y = MathUtils.clamp(camera.position.y, effectiveViewportHeight / 2.0f, world.getWorldMapRows()*Tile.ON_SCREEN_DEFAULT_HEIGHT - effectiveViewportHeight/2.0f);
+        }
+
         if (Gdx.input.isKeyPressed(Input.Keys.W)) {
             camera.translate(0, 20*camera.zoom, 0);
         }
@@ -137,24 +145,28 @@ public class WorldGenTestScreen implements Screen {
             camera.translate(20*camera.zoom, 0, 0);
         }
 
-        if (Gdx.input.isKeyPressed(Input.Keys.E)) {
+        if (Gdx.input.isKeyPressed(Input.Keys.Q)) {
             camera.zoom += 0.2;
         }
-        if (Gdx.input.isKeyPressed(Input.Keys.Q)) {
+        if (Gdx.input.isKeyPressed(Input.Keys.E)) {
             camera.zoom -= 0.2;
         }
 
+        if (Gdx.input.isKeyPressed(Input.Keys.UP) || Gdx.input.isKeyPressed(Input.Keys.DOWN) || Gdx.input.isKeyPressed(Input.Keys.LEFT) || Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
+            camera.position.set(player.getX(), player.getY(), 0);
+        }
+
         if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
-            player.adjustY(20);
+            player.adjustY(50);
         }
         if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
-            player.adjustY(-20);
+            player.adjustY(-50);
         }
         if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
-            player.adjustX(-20);
+            player.adjustX(-50);
         }
         if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
-            player.adjustX(20);
+            player.adjustX(50);
         }
 
         if(Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)){
@@ -163,7 +175,7 @@ public class WorldGenTestScreen implements Screen {
     }
 
     private void setCameraLimits() {
-        camera.position.set(player.getX(), player.getY(), 0);
+        //camera.position.set(player.getX(), player.getY(), 0);
 
         camera.zoom = MathUtils.clamp(camera.zoom, 0.1f, ((float)world.getWorldMapRows()*(float)Tile.ON_SCREEN_DEFAULT_HEIGHT/(float)Gdx.graphics.getHeight()));
 

@@ -67,17 +67,40 @@ public class WorldGenerator {
                 if (worldIntMap[r][c] == seedColor) {
                     Vector2 origin = new Vector2(r, c);
                     buildIsland(r, c, origin);
-                    worldIntMap[r][c] = seedColor;
+                    //worldIntMap[r][c] = seedColor;
                 }
             }
         }
-//        for (int r = 0; r < worldIntMap.length; r++) {
-//            for (int c = 0; c < worldIntMap[r].length; c++) {
-//                if (worldIntMap[r][c] == water) {
-//
-//                }
-//            }
-//        }
+        int i = 1;
+        while (true) {
+            int n = 0;
+            for (int r = 0; r < worldIntMap.length; r++) {
+                for (int c = 0; c < worldIntMap[r].length; c++) {
+                    if (r > i && c > i && r < worldIntMap.length - i && c < worldIntMap[0].length - i && worldIntMap[r][c] == water) {
+                        if (worldIntMap[r - i][c] == sand && worldIntMap[r + i][c] == sand) {
+                            worldIntMap[r][c] = sand;
+                            n++;
+                        }
+                        if (worldIntMap[r][c - i] == sand && worldIntMap[r][c + i] == sand) {
+                            worldIntMap[r][c] = sand;
+                            n++;
+                        }
+                        if (worldIntMap[r - i][c - i] == sand && worldIntMap[r + i][c + i] == sand) {
+                            worldIntMap[r][c] = sand;
+                            n++;
+                        }
+                        if (worldIntMap[r - i][c + i] == sand && worldIntMap[r + i][c - i] == sand) {
+                            worldIntMap[r][c] = sand;
+                            n++;
+                        }
+                    }
+                }
+            }
+            if (n == 0) {
+                if (i == 3) break;
+                i++;
+            }
+        }
     }
 
     private void buildIsland(int r, int c, Vector2 origin) {
