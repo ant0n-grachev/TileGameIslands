@@ -71,35 +71,43 @@ public class WorldGenerator {
                 }
             }
         }
-        int i = 1;
         while (true) {
-            int n = 0;
-            for (int r = 0; r < worldIntMap.length; r++) {
-                for (int c = 0; c < worldIntMap[r].length; c++) {
-                    if (r > i && c > i && r < worldIntMap.length - i && c < worldIntMap[0].length - i && worldIntMap[r][c] == water) {
-                        if (worldIntMap[r - i][c] == sand && worldIntMap[r + i][c] == sand) {
-                            worldIntMap[r][c] = sand;
-                            n++;
-                        }
-                        if (worldIntMap[r][c - i] == sand && worldIntMap[r][c + i] == sand) {
-                            worldIntMap[r][c] = sand;
-                            n++;
-                        }
-                        if (worldIntMap[r - i][c - i] == sand && worldIntMap[r + i][c + i] == sand) {
-                            worldIntMap[r][c] = sand;
-                            n++;
-                        }
-                        if (worldIntMap[r - i][c + i] == sand && worldIntMap[r + i][c - i] == sand) {
-                            worldIntMap[r][c] = sand;
-                            n++;
+            int t = 0;
+            int i = 1;
+            while (true) {
+                int n = 0;
+                for (int r = 0; r < worldIntMap.length; r++) {
+                    for (int c = 0; c < worldIntMap[r].length; c++) {
+                        if (r > i && c > i && r < worldIntMap.length - i && c < worldIntMap[0].length - i && worldIntMap[r][c] == water) {
+                            if (worldIntMap[r - i][c] == sand && worldIntMap[r + i][c] == sand) {
+                                worldIntMap[r][c] = sand;
+                                n++;
+                                t++;
+                            }
+                            if (worldIntMap[r][c - i] == sand && worldIntMap[r][c + i] == sand) {
+                                worldIntMap[r][c] = sand;
+                                n++;
+                                t++;
+                            }
+                            if (worldIntMap[r - i][c - i] == sand && worldIntMap[r + i][c + i] == sand) {
+                                worldIntMap[r][c] = sand;
+                                n++;
+                                t++;
+                            }
+                            if (worldIntMap[r - i][c + i] == sand && worldIntMap[r + i][c - i] == sand) {
+                                worldIntMap[r][c] = sand;
+                                n++;
+                                t++;
+                            }
                         }
                     }
                 }
+                if (n == 0) {
+                    if (i == 5) break;
+                    i++;
+                }
             }
-            if (n == 0) {
-                if (i == 3) break;
-                i++;
-            }
+            if (t == 0) break;
         }
     }
 
